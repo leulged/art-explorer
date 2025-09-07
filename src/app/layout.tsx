@@ -77,7 +77,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${inter.variable} antialiased`}
       >
-        <link rel="preconnect" href="https://images.metmuseum.org" />
+        <link rel="preconnect" href="https://images.metmuseum.org" crossOrigin="anonymous" />
         <a
           href="#content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white border rounded px-3 py-1"

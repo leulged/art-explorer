@@ -25,7 +25,7 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
               src={data.image}
               alt={data.alt}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 28vw"
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, 26vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               priority={priority}
               fetchPriority={priority ? "high" : "auto"}
