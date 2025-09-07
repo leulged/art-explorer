@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Artwork } from "@/types/artwork";
 import { getArtworkById, getFeaturedArtworks, searchObjectIds } from "@/lib/metApi";
 import { ArtworkGrid } from "@/components/artwork/ArtworkGrid";
 import HeroArtwork from "@/components/artwork/HeroArtwork";
@@ -18,7 +19,7 @@ export default async function Home({ searchParams }: { searchParams?: Record<str
   try {
     const q = searchParams?.q?.trim();
     const by = (searchParams?.by as "title" | "author") || "title";
-    let artworks;
+    let artworks: Artwork[];
     if (q) {
       const opts =
         by === "author" ? { hasImages: true, artistOrCulture: true } : { hasImages: true };
@@ -26,7 +27,7 @@ export default async function Home({ searchParams }: { searchParams?: Record<str
       const take = 12;
       const settled = await Promise.allSettled(ids.slice(0, take).map((id) => getArtworkById(id)));
       artworks = settled
-        .filter((r): r is PromiseFulfilledResult<any> => r.status === "fulfilled")
+        .filter((r): r is PromiseFulfilledResult<Artwork> => r.status === "fulfilled")
         .map((r) => r.value)
         .filter((a) => a && (a.primaryImage || a.primaryImageSmall));
     } else {
