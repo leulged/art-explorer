@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Artwork } from "@/types/artwork";
+import { getOptimizedImageUrl } from "@/lib/image";
 
 type HeroArtworkProps = {
   artwork: Artwork;
@@ -11,7 +12,8 @@ type HeroArtworkProps = {
 export function HeroArtwork({ artwork }: HeroArtworkProps) {
   const title = artwork.title?.trim() || "Untitled";
   const artist = artwork.artistDisplayName?.trim() || "Unknown Artist";
-  const image = artwork.primaryImageSmall || artwork.primaryImage || "";
+  const raw = artwork.primaryImageSmall || artwork.primaryImage || "";
+  const image = getOptimizedImageUrl(raw, { width: 1600, quality: 70, format: "webp" });
   const alt = `${title} by ${artist}`;
 
   return (

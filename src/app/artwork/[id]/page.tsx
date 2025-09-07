@@ -6,6 +6,7 @@ import { getArtworkById, searchObjectIds } from "@/lib/metApi";
 import DetailImage from "@/components/artwork/DetailImage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Artwork } from "@/types/artwork";
+import { getOptimizedImageUrl } from "@/lib/image";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -71,7 +72,11 @@ export default async function ArtworkPage({ params }: PageProps) {
     notFound();
   }
 
-  const imageUrl = art.primaryImageSmall || art.primaryImage || "";
+  const imageUrl = getOptimizedImageUrl(art.primaryImageSmall || art.primaryImage || "", {
+    width: 1800,
+    quality: 70,
+    format: "webp",
+  });
   const alt = `${art.title || "Artwork"} by ${art.artistDisplayName || "Unknown Artist"}`;
 
   return (

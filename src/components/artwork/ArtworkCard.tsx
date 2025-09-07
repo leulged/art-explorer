@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Artwork, toArtworkCardData } from "@/types/artwork";
+import { getOptimizedImageUrl } from "@/lib/image";
 
 type ArtworkCardProps = {
   artwork: Artwork;
@@ -9,6 +10,7 @@ type ArtworkCardProps = {
 
 export function ArtworkCard({ artwork }: ArtworkCardProps) {
   const data = toArtworkCardData(artwork);
+  const optimized = getOptimizedImageUrl(data.image, { width: 800, quality: 70, format: "webp" });
   return (
     <Link
       href={`/artwork/${data.id}`}
@@ -20,7 +22,7 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-50">
           {data.image ? (
             <Image
-              src={data.image}
+              src={optimized || data.image}
               alt={data.alt}
               fill
               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, (max-width: 1440px) 23vw, 20vw"
