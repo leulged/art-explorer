@@ -85,11 +85,13 @@ export default async function ArtworkPage({ params }: PageProps) {
           <h1 className="text-3xl md:text-4xl font-semibold mb-1 tracking-tight [font-family:var(--font-playfair),serif]">
             {art.title}
           </h1>
-          <p className="text-neutral-700">{art.artistDisplayName || "Unknown Artist"}</p>
+          <p className="text-neutral-700 dark:text-neutral-300">
+            {art.artistDisplayName || "Unknown Artist"}
+          </p>
         </header>
 
         {imageUrl ? (
-          <div className="mb-8 rounded-xl border bg-neutral-50 overflow-hidden shadow-sm">
+          <div className="mb-8 rounded-xl border bg-neutral-50 dark:bg-neutral-900 overflow-hidden shadow-sm">
             {/* Preload hero when available for LCP */}
             <link rel="preload" as="image" href={imageUrl} />
             <div className="relative w-full aspect-[16/9] md:aspect-[21/9]">
@@ -106,7 +108,7 @@ export default async function ArtworkPage({ params }: PageProps) {
         <section className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-8 space-y-6">
             <h2 className="text-lg font-medium border-b border-[var(--border)] pb-2">Overview</h2>
-            <p className="text-neutral-700 text-sm md:text-base">
+            <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
               {[art.artistDisplayBio, art.creditLine, art.objectName]
                 .filter(Boolean)
                 .slice(0, 1)
@@ -114,26 +116,26 @@ export default async function ArtworkPage({ params }: PageProps) {
             </p>
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
               <div>
-                <dt className="text-neutral-500">Artist</dt>
+                <dt className="text-neutral-500 dark:text-neutral-400">Artist</dt>
                 <dd>{art.artistDisplayName || "Unknown Artist"}</dd>
               </div>
               <div>
-                <dt className="text-neutral-500">Date</dt>
+                <dt className="text-neutral-500 dark:text-neutral-400">Date</dt>
                 <dd>{art.objectDate || "—"}</dd>
               </div>
               <div>
-                <dt className="text-neutral-500">Medium</dt>
+                <dt className="text-neutral-500 dark:text-neutral-400">Medium</dt>
                 <dd>{art.medium || "—"}</dd>
               </div>
               <div>
-                <dt className="text-neutral-500">Culture</dt>
+                <dt className="text-neutral-500 dark:text-neutral-400">Culture</dt>
                 <dd>{art.culture || "—"}</dd>
               </div>
             </dl>
             {art.artistDisplayBio ? (
               <div className="pt-2">
                 <h3 className="text-base font-medium mb-1">About the artist</h3>
-                <p className="text-neutral-700 text-sm md:text-base line-clamp-4">
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base line-clamp-4">
                   {art.artistDisplayBio}
                 </p>
               </div>
@@ -146,12 +148,16 @@ export default async function ArtworkPage({ params }: PageProps) {
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-500">Department</span>
-                  <span>{art.department || "—"}</span>
+                  <span className="text-neutral-500 dark:text-neutral-400">Department</span>
+                  <span className="text-neutral-800 dark:text-neutral-200">
+                    {art.department || "—"}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-500">Accession</span>
-                  <span>{art.accessionNumber || "—"}</span>
+                  <span className="text-neutral-500 dark:text-neutral-400">Accession</span>
+                  <span className="text-neutral-800 dark:text-neutral-200">
+                    {art.accessionNumber || "—"}
+                  </span>
                 </div>
                 {art.objectURL ? (
                   <a

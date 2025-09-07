@@ -70,6 +70,10 @@ export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
   ];
 
   try {
+    // Pin the hero to "The Penitence of Saint Jerome" when available
+    const saintIds = await searchObjectIds("The Penitence of Saint Jerome", { hasImages: true });
+    const saint = await getManySafely(saintIds, 5);
+
     // Lightweight primary query: highlighted masterpieces with images
     const idsPrimary = await searchObjectIds("masterpiece", { hasImages: true, isHighlight: true });
     let results = await getManySafely(idsPrimary, 60);
@@ -89,6 +93,11 @@ export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
 
     // Dedupe and slice
     const byId = new Map<number, Artwork>();
+
+    // Put the Saint Jerome piece first if found
+    if (saint.length > 0) {
+      byId.set(saint[0].objectID, saint[0]);
+    }
     for (const a of results) {
       if (!byId.has(a.objectID)) byId.set(a.objectID, a);
     }

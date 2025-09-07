@@ -27,12 +27,12 @@ export function SiteHeader() {
         <Link
           href="/"
           prefetch
-          className="font-semibold tracking-tight hover:opacity-90 [font-family:var(--font-playfair),serif]"
+          className="font-semibold tracking-tight hover:opacity-90 [font-family:var(--font-playfair),serif] text-neutral-900 dark:text-neutral-100"
         >
           Art Explorer
         </Link>
         <div className="flex items-center gap-3">
-          <nav aria-label="Primary" className="text-sm text-neutral-700">
+          <nav aria-label="Primary" className="text-sm text-neutral-700 dark:text-neutral-200">
             <Link
               href="/"
               prefetch

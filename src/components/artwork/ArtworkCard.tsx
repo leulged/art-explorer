@@ -46,12 +46,14 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
           <CardTitle className="line-clamp-1 text-base tracking-tight [font-family:var(--font-playfair),serif]">
             {data.title}
           </CardTitle>
-          <CardDescription className="line-clamp-1 italic text-neutral-700 text-sm md:text-base">
+          <CardDescription className="line-clamp-1 italic text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
             {data.artist}
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0 pb-4">
-          <p className="line-clamp-2 text-sm text-neutral-600">{data.description}</p>
+          <p className="line-clamp-2 text-sm text-neutral-600 dark:text-neutral-300">
+            {data.description}
+          </p>
         </CardContent>
       </Card>
     </Link>
