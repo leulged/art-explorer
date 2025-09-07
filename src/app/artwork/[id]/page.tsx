@@ -146,9 +146,7 @@ export default async function ArtworkPage({ params }: PageProps) {
           </div>
         </section>
 
-        <footer className="mt-10 text-xs text-neutral-500">
-          Data & Images © The Metropolitan Museum of Art (Public Domain)
-        </footer>
+        {/* Global footer already includes credit */}
       </article>
 
       {/* JSON-LD for SEO */}

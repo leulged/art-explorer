@@ -47,9 +47,6 @@ export default async function Home() {
         ) : (
           <p className="text-neutral-600">No artworks found at the moment.</p>
         )}
-        <footer className="mt-10 text-xs text-neutral-500">
-          Data & Images © The Metropolitan Museum of Art (Public Domain)
-        </footer>
       </main>
     );
   } catch (e) {
