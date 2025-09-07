@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import type { Artwork } from "@/types/artwork";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { getArtworkById, searchObjectIds } from "@/lib/metApi";
 import DetailImage from "@/components/artwork/DetailImage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Artwork } from "@/types/artwork";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -15,8 +15,12 @@ export async function generateStaticParams() {
   const ids = await searchObjectIds("masterpiece", { hasImages: true });
   // Pre-validate candidates to avoid build-time 403s
   const settled = await Promise.allSettled(ids.slice(0, 80).map((id) => getArtworkById(id)));
-  const fulfilled = settled.filter((r): r is PromiseFulfilledResult<Artwork> => r.status === "fulfilled");
-  const ok = fulfilled.filter((r) => r.value && (r.value.primaryImage || r.value.primaryImageSmall));
+  const fulfilled = settled.filter(
+    (r): r is PromiseFulfilledResult<Artwork> => r.status === "fulfilled",
+  );
+  const ok = fulfilled.filter(
+    (r) => r.value && (r.value.primaryImage || r.value.primaryImageSmall),
+  );
   return ok.slice(0, 20).map((r) => ({ id: String(r.value.objectID) }));
 }
 
