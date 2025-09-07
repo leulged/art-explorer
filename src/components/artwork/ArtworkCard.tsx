@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,10 +5,9 @@ import { Artwork, toArtworkCardData } from "@/types/artwork";
 
 type ArtworkCardProps = {
   artwork: Artwork;
-  priority?: boolean;
 };
 
-export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
+export function ArtworkCard({ artwork }: ArtworkCardProps) {
   const data = toArtworkCardData(artwork);
   return (
     <Link
@@ -27,14 +24,11 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
               alt={data.alt}
               fill
               sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, (max-width: 1440px) 23vw, 20vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-105 opacity-0 data-[loaded=true]:opacity-100 motion-reduce:transition-none"
-              priority={priority}
-              fetchPriority={priority ? "high" : "auto"}
-              loading={priority ? "eager" : "lazy"}
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
               unoptimized
-              placeholder={priority ? undefined : "blur"}
+              placeholder="blur"
               blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='12'%3E%3Crect width='100%25' height='100%25' fill='%23f1f1f1'/%3E%3C/svg%3E"
-              onLoadingComplete={(img) => img.setAttribute("data-loaded", "true")}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 text-neutral-500 text-sm">
