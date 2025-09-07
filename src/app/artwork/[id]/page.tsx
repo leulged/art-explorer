@@ -13,19 +13,13 @@ export async function generateStaticParams() {
   return ids.slice(0, 20).map((id) => ({ id: String(id) }));
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const numericId = Number(id);
   try {
     const art = await getArtworkById(numericId);
-    const title = `${art.title || "Artwork"} – ${
-      art.artistDisplayName || "Unknown Artist"
-    }`;
-    const description = [art.medium, art.objectDate]
-      .filter(Boolean)
-      .join(" · ");
+    const title = `${art.title || "Artwork"} – ${art.artistDisplayName || "Unknown Artist"}`;
+    const description = [art.medium, art.objectDate].filter(Boolean).join(" · ");
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
     const canonical = `${siteUrl}/artwork/${numericId}`;
@@ -59,9 +53,7 @@ export default async function ArtworkPage({ params }: PageProps) {
   const art = await getArtworkById(Number(id));
 
   const imageUrl = art.primaryImageSmall || art.primaryImage || "";
-  const alt = `${art.title || "Artwork"} by ${
-    art.artistDisplayName || "Unknown Artist"
-  }`;
+  const alt = `${art.title || "Artwork"} by ${art.artistDisplayName || "Unknown Artist"}`;
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
@@ -74,9 +66,7 @@ export default async function ArtworkPage({ params }: PageProps) {
           <h1 className="text-3xl font-semibold mb-2 tracking-tight [font-family:var(--font-playfair),serif]">
             {art.title}
           </h1>
-          <p className="text-neutral-700">
-            {art.artistDisplayName || "Unknown Artist"}
-          </p>
+          <p className="text-neutral-700">{art.artistDisplayName || "Unknown Artist"}</p>
         </header>
 
         {imageUrl ? (

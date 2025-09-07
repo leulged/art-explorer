@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import SiteHeader from "@/components/shared/SiteHeader";
+import { Geist, Geist_Mono, Inter, Playfair_Display } from "next/font/google";
 import SiteFooter from "@/components/shared/SiteFooter";
-import { Playfair_Display, Inter } from "next/font/google";
-import { Geist, Geist_Mono } from "next/font/google";
+import SiteHeader from "@/components/shared/SiteHeader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,7 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+});
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";

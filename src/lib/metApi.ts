@@ -21,24 +21,18 @@ type SearchOptions = {
 
 export async function searchObjectIds(
   query: string,
-  options: SearchOptions = { hasImages: true }
+  options: SearchOptions = { hasImages: true },
 ): Promise<number[]> {
   const params = new URLSearchParams({ q: query });
   const opt = { hasImages: true, ...options };
-  if (opt.hasImages !== undefined)
-    params.set("hasImages", String(opt.hasImages));
-  if (opt.artistOrCulture !== undefined)
-    params.set("artistOrCulture", String(opt.artistOrCulture));
+  if (opt.hasImages !== undefined) params.set("hasImages", String(opt.hasImages));
+  if (opt.artistOrCulture !== undefined) params.set("artistOrCulture", String(opt.artistOrCulture));
   if (opt.isOnView !== undefined) params.set("isOnView", String(opt.isOnView));
-  if (opt.departmentId !== undefined)
-    params.set("departmentId", String(opt.departmentId));
+  if (opt.departmentId !== undefined) params.set("departmentId", String(opt.departmentId));
   if (opt.medium) params.set("medium", opt.medium);
-  if (opt.isHighlight !== undefined)
-    params.set("isHighlight", String(opt.isHighlight));
+  if (opt.isHighlight !== undefined) params.set("isHighlight", String(opt.isHighlight));
 
-  const data = await fetchJson<SearchResponse>(
-    `${MET_BASE_URL}/search?${params.toString()}`
-  );
+  const data = await fetchJson<SearchResponse>(`${MET_BASE_URL}/search?${params.toString()}`);
   return data.objectIDs?.slice(0, 80) ?? [];
 }
 
@@ -48,23 +42,15 @@ export async function getArtworkById(objectId: number): Promise<Artwork> {
 
 export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
   // Helper to fetch many object details but skip any failures
-  const getManySafely = async (
-    ids: number[],
-    take: number
-  ): Promise<Artwork[]> => {
-    const settled = await Promise.allSettled(
-      ids.slice(0, take).map((id) => getArtworkById(id))
-    );
+  const getManySafely = async (ids: number[], take: number): Promise<Artwork[]> => {
+    const settled = await Promise.allSettled(ids.slice(0, take).map((id) => getArtworkById(id)));
     return settled
-      .filter(
-        (r): r is PromiseFulfilledResult<Artwork> => r.status === "fulfilled"
-      )
+      .filter((r): r is PromiseFulfilledResult<Artwork> => r.status === "fulfilled")
       .map((r) => r.value)
       .filter((a) => a && (a.primaryImage || a.primaryImageSmall));
   };
 
-  const scored = (a: Artwork) =>
-    (a.isHighlight ? 2 : 0) + (a.isPublicDomain ? 1 : 0);
+  const scored = (a: Artwork) => (a.isHighlight ? 2 : 0) + (a.isPublicDomain ? 1 : 0);
 
   try {
     // 1) Strongly bias to famous painters
@@ -92,8 +78,8 @@ export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
         ...items.filter(
           (a) =>
             (a.classification?.toLowerCase().includes("painting") ?? true) &&
-            (a.isPublicDomain ?? true)
-        )
+            (a.isPublicDomain ?? true),
+        ),
       );
       if (results.length >= limit) break;
     }

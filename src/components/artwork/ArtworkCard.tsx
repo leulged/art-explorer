@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Artwork, toArtworkCardData } from "@/types/artwork";
 
 type ArtworkCardProps = {
@@ -49,9 +43,7 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
-          <p className="line-clamp-2 text-sm text-neutral-600">
-            {data.description}
-          </p>
+          <p className="line-clamp-2 text-sm text-neutral-600">{data.description}</p>
         </CardContent>
       </Card>
     </Link>
