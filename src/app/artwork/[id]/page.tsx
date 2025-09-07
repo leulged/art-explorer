@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import Script from "next/script";
 import { getArtworkById, searchObjectIds } from "@/lib/metApi";
-import { notFound } from "next/navigation";
 
 type PageProps = {
   params: Promise<{ id: string }>;

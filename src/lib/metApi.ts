@@ -1,6 +1,7 @@
 import { Artwork, SearchResponse } from "@/types/artwork";
 
-const MET_BASE_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
+const MET_BASE_URL =
+  process.env.MET_BASE_URL || "https://collectionapi.metmuseum.org/public/collection/v1";
 
 async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url, { next: { revalidate: 3600 } });
