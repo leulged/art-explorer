@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -25,12 +25,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteUrl,
+    siteName: "Art Explorer",
     title: "Art Explorer – The Met Collection",
     description:
       "Discover highlighted artworks from The Metropolitan Museum of Art with fast, accessible UI.",
     images: [
       {
-        url: "/og-default.png",
+        url: "/next.svg",
         width: 1200,
         height: 630,
         alt: "Art Explorer – The Met Collection",
@@ -42,9 +43,20 @@ export const metadata: Metadata = {
     title: "Art Explorer – The Met Collection",
     description:
       "Discover highlighted artworks from The Metropolitan Museum of Art with fast, accessible UI.",
-    images: ["/og-default.png"],
+    images: ["/next.svg"],
   },
-  alternates: { canonical: siteUrl },
+  alternates: { canonical: siteUrl, languages: { en: "/" } },
+  robots: { index: true, follow: true },
+  manifest: "/manifest.webmanifest",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({

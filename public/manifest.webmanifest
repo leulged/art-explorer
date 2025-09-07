@@ -1,0 +1,11 @@
+{
+  "name": "Art Explorer",
+  "short_name": "ArtExplorer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": []
+}
+
+

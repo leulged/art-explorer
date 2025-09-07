@@ -12,6 +12,8 @@ export const metadata: Metadata = {
     "Browse highlighted artworks from The Metropolitan Museum of Art. Optimized images, fast loads, and accessible UI.",
 };
 
+export const dynamic = "force-static";
+
 export default async function Home() {
   try {
     const artworks = await getFeaturedArtworks(9);
@@ -25,6 +27,21 @@ export default async function Home() {
             Public domain data from The Metropolitan Museum of Art
           </p>
         </header>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              itemListElement: artworks.map((a, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                url: `/artwork/${a.objectID}`,
+                name: a.title,
+              })),
+            }),
+          }}
+        />
         {artworks.length > 0 ? (
           <ArtworkGrid artworks={artworks} />
         ) : (
