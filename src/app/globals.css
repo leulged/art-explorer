@@ -45,24 +45,25 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  /* Museum-inspired light palette */
+  --background: #f9f6f1; /* light cream */
+  --foreground: #222222; /* charcoal */
+  --card: #ffffff;
+  --card-foreground: #222222;
+  --popover: #ffffff;
+  --popover-foreground: #222222;
+  --primary: #6b1e26; /* deep burgundy accent */
+  --primary-foreground: #ffffff;
+  --secondary: #f2ede5; /* soft neutral */
+  --secondary-foreground: #222222;
+  --muted: #f2ede5;
+  --muted-foreground: #555555;
+  --accent: #f2ede5;
+  --accent-foreground: #6b1e26;
+  --destructive: #b42318;
+  --border: #e7e1d6;
+  --input: #e7e1d6;
+  --ring: #b58a91; /* subtle burgundy ring */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);

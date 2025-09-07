@@ -94,7 +94,9 @@ export default async function ArtworkPage({ params }: PageProps) {
 
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           <div>
-            <h2 className="text-lg font-medium mb-2">Details</h2>
+            <h2 className="text-lg font-medium mb-2 border-b border-[var(--border)] pb-1">
+              Details
+            </h2>
             <dl className="space-y-2 text-sm">
               <div>
                 <dt className="text-neutral-500">Artist</dt>
@@ -115,7 +117,9 @@ export default async function ArtworkPage({ params }: PageProps) {
             </dl>
           </div>
           <div>
-            <h2 className="text-lg font-medium mb-2">Museum</h2>
+            <h2 className="text-lg font-medium mb-2 border-b border-[var(--border)] pb-1">
+              Museum
+            </h2>
             <dl className="space-y-2 text-sm">
               <div>
                 <dt className="text-neutral-500">Department</dt>
