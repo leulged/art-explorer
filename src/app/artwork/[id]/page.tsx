@@ -71,7 +71,9 @@ export default async function ArtworkPage({ params }: PageProps) {
 
       <article className="mt-6">
         <header className="mb-6">
-          <h1 className="text-3xl font-semibold mb-2 tracking-tight">{art.title}</h1>
+          <h1 className="text-3xl font-semibold mb-2 tracking-tight [font-family:var(--font-playfair),serif]">
+            {art.title}
+          </h1>
           <p className="text-neutral-700">
             {art.artistDisplayName || "Unknown Artist"}
           </p>

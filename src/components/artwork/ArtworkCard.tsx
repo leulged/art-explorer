@@ -41,10 +41,10 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
           )}
         </div>
         <CardHeader className="pb-2">
-          <CardTitle className="line-clamp-1 text-base tracking-tight">
+          <CardTitle className="line-clamp-1 text-base tracking-tight [font-family:var(--font-playfair),serif]">
             {data.title}
           </CardTitle>
-          <CardDescription className="line-clamp-1">
+          <CardDescription className="line-clamp-1 italic text-neutral-600">
             {data.artist}
           </CardDescription>
         </CardHeader>
