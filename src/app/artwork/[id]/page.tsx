@@ -76,6 +76,8 @@ export default async function ArtworkPage({ params }: PageProps) {
 
         {imageUrl ? (
           <div className="mb-8 rounded-xl border bg-neutral-50 overflow-hidden shadow-sm">
+            {/* Preload hero when available for LCP */}
+            <link rel="preload" as="image" href={imageUrl} />
             <div className="relative w-full aspect-[16/9] md:aspect-[21/9]">
               <Image
                 src={imageUrl}

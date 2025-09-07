@@ -7,9 +7,10 @@ import { Artwork, toArtworkCardData } from "@/types/artwork";
 
 type ArtworkCardProps = {
   artwork: Artwork;
+  priority?: boolean;
 };
 
-export function ArtworkCard({ artwork }: ArtworkCardProps) {
+export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
   const data = toArtworkCardData(artwork);
   return (
     <Link
@@ -24,9 +25,11 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
               src={data.image}
               alt={data.alt}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 28vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
-              priority={false}
+              priority={priority}
+              fetchPriority={priority ? "high" : "auto"}
+              loading={priority ? "eager" : "lazy"}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 text-neutral-500 text-sm">
