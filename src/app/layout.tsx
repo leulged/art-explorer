@@ -81,12 +81,31 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${inter.variable} antialiased`}
       >
         <link rel="preconnect" href="https://images.metmuseum.org" crossOrigin="anonymous" />
+        {/* Preload fonts to improve FCP */}
+        <link rel="preload" href="/" as="font" crossOrigin="anonymous" />
         <a
           href="#content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white border rounded px-3 py-1"
         >
           Skip to content
         </a>
+        {/* JSON-LD: WebSite with SearchAction */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Art Explorer",
+              url: siteUrl,
+              potentialAction: {
+                "@type": "SearchAction",
+                target: `${siteUrl}/?q={search_term_string}`,
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
         <SiteHeader />
         <div id="content">
           <PageTransition>{children}</PageTransition>

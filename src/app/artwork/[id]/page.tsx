@@ -186,14 +186,14 @@ export default async function ArtworkPage({ params }: PageProps) {
         {/* Global footer already includes credit */}
       </article>
 
-      {/* JSON-LD for SEO */}
+      {/* JSON-LD for SEO: VisualArtwork + BreadcrumbList */}
       <Script
         id="jsonld-artwork"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "CreativeWork",
+            "@type": "VisualArtwork",
             name: art.title,
             creator: art.artistDisplayName || "Unknown",
             dateCreated: art.objectDate || undefined,
@@ -201,6 +201,26 @@ export default async function ArtworkPage({ params }: PageProps) {
             inLanguage: "en",
             image: imageUrl || undefined,
             url: art.objectURL || undefined,
+            artform: art.classification || undefined,
+          }),
+        }}
+      />
+      <Script
+        id="jsonld-breadcrumbs"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: art.title,
+                item: `/artwork/${art.objectID}`,
+              },
+            ],
           }),
         }}
       />
