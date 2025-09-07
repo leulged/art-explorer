@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "Browse highlighted artworks from The Metropolitan Museum of Art. Optimized images, fast loads, and accessible UI.",
 };
 
-// export const dynamic = "force-static";
+
 
 export default async function Home({
   searchParams,
