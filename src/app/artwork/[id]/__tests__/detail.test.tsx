@@ -1,3 +1,4 @@
+/* global vi, describe, it, expect */
 import { render, screen } from "@testing-library/react";
 import ArtworkPage from "../page";
 
