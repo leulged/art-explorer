@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Art Explorer – The Met Collection
 
-## Getting Started
+Small demo app built with Next.js 15 (App Router), TypeScript, Tailwind and shadcn/ui.
+It lists highlighted artworks from The Metropolitan Museum of Art API and provides a detail page
+with optimized images and basic SEO.
 
-First, run the development server:
+Live link: (to be added after deploy)
+
+## Tech stack
+
+- Next.js 15 (App Router), TypeScript (strict)
+- Tailwind v4 + shadcn/ui (Card, Skeleton)
+- Vitest + React Testing Library (minimal smoke tests)
+
+## Features
+
+- Server-rendered list with ISR (revalidate hourly)
+- Detail page with SSG (`generateStaticParams`) and dynamic `generateMetadata`
+- Optimized images via `next/image`
+- Loading/Error states and defensive fallbacks (Unknown Artist, etc.)
+- SEO: Open Graph/Twitter, canonical URLs, JSON‑LD (CreativeWork/ItemList), robots + sitemap
+- Accessibility: semantic headings, focus rings, skip link, reduced-motion friendly skeletons
+
+## Getting started
+
+1. Install deps
+
+```bash
+npm install
+```
+
+2. Create `.env.local`
+
+```bash
+MET_BASE_URL=https://collectionapi.metmuseum.org/public/collection/v1
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+3. Dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Tests
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure
 
-## Learn More
+- `src/app` – routes (home, artwork/[id], loading/error/not-found)
+- `src/components` – UI pieces (cards, grid, skeletons, header/footer)
+- `src/lib/metApi.ts` – Met API client
+- `src/types/artwork.ts` – API types + card mapping
 
-To learn more about Next.js, take a look at the following resources:
+## SEO notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- List page: `export const metadata`, ItemList JSON‑LD
+- Detail page: `generateMetadata`, CreativeWork JSON‑LD, OG/Twitter image when available
+- `robots.ts` and `sitemap.ts` are included; set `NEXT_PUBLIC_SITE_URL` in env for correct canonical/OG
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Decisions & limitations
 
-## Deploy on Vercel
+- We seed search by well-known terms and prefer highlight/public-domain items for quality images
+- Images come directly from The Met; availability varies by object
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Next improvements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Search and filters (department, culture, date range)
+- Pagination/infinite scroll on the homepage
+- Favorites (local storage) and shareable links
+- More robust error boundaries and prefetching
+- Broader JSON‑LD coverage and a sitemap for categories
+
+## Deployment
+
+Deploy on Vercel:
+
+1. Push to GitHub
+2. Create new Vercel project and import the repo
+3. Add env vars: `MET_BASE_URL`, `NEXT_PUBLIC_SITE_URL` (your production URL)
+4. Deploy – Vercel will handle build and previews
