@@ -4,7 +4,15 @@ const MET_BASE_URL =
   process.env.MET_BASE_URL || "https://collectionapi.metmuseum.org/public/collection/v1";
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url, { next: { revalidate: 3600 } });
+  const response = await fetch(url, {
+    // Cache for SSG/ISR; reduces third-party request volume
+    next: { revalidate: 3600 },
+    headers: {
+      accept: "application/json",
+      // Some third parties behave better with a UA set on server fetches
+      "user-agent": "ArtExplorer/1.0 (+https://vercel.com)",
+    },
+  });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: ${response.status}`);
   }
@@ -24,17 +32,23 @@ export async function searchObjectIds(
   query: string,
   options: SearchOptions = { hasImages: true },
 ): Promise<number[]> {
-  const params = new URLSearchParams({ q: query });
-  const opt = { hasImages: true, ...options };
-  if (opt.hasImages !== undefined) params.set("hasImages", String(opt.hasImages));
-  if (opt.artistOrCulture !== undefined) params.set("artistOrCulture", String(opt.artistOrCulture));
-  if (opt.isOnView !== undefined) params.set("isOnView", String(opt.isOnView));
-  if (opt.departmentId !== undefined) params.set("departmentId", String(opt.departmentId));
-  if (opt.medium) params.set("medium", opt.medium);
-  if (opt.isHighlight !== undefined) params.set("isHighlight", String(opt.isHighlight));
+  try {
+    const params = new URLSearchParams({ q: query });
+    const opt = { hasImages: true, ...options };
+    if (opt.hasImages !== undefined) params.set("hasImages", String(opt.hasImages));
+    if (opt.artistOrCulture !== undefined)
+      params.set("artistOrCulture", String(opt.artistOrCulture));
+    if (opt.isOnView !== undefined) params.set("isOnView", String(opt.isOnView));
+    if (opt.departmentId !== undefined) params.set("departmentId", String(opt.departmentId));
+    if (opt.medium) params.set("medium", opt.medium);
+    if (opt.isHighlight !== undefined) params.set("isHighlight", String(opt.isHighlight));
 
-  const data = await fetchJson<SearchResponse>(`${MET_BASE_URL}/search?${params.toString()}`);
-  return data.objectIDs?.slice(0, 80) ?? [];
+    const data = await fetchJson<SearchResponse>(`${MET_BASE_URL}/search?${params.toString()}`);
+    return data.objectIDs?.slice(0, 80) ?? [];
+  } catch {
+    // Fail open: return empty so callers can fallback without throwing
+    return [];
+  }
 }
 
 export async function getArtworkById(objectId: number): Promise<Artwork> {
@@ -51,81 +65,36 @@ export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
       .filter((a) => a && (a.primaryImage || a.primaryImageSmall));
   };
 
-  const scored = (a: Artwork) => (a.isHighlight ? 2 : 0) + (a.isPublicDomain ? 1 : 0);
+  const curatedFallback = [
+    313658, 551786, 729644, 437261, 459027, 436524, 435809, 436839, 459107, 436529,
+  ];
 
   try {
-    // 1) Strongly bias to famous painters
-    const artists = [
-      "Vincent van Gogh",
-      "Claude Monet",
-      "Johannes Vermeer",
-      "Rembrandt",
-      "J. M. W. Turner",
-      "Edgar Degas",
-      "Pierre-Auguste Renoir",
-      "Paul Cézanne",
-      "Sandro Botticelli",
-      "Raphael",
-    ];
+    // Lightweight primary query: highlighted masterpieces with images
+    const idsPrimary = await searchObjectIds("masterpiece", { hasImages: true, isHighlight: true });
+    let results = await getManySafely(idsPrimary, 60);
 
-    const results: Artwork[] = [];
-    for (const artist of artists) {
-      const ids = await searchObjectIds(artist, {
-        hasImages: true,
-        artistOrCulture: true,
-      });
-      const items = await getManySafely(ids, 50);
-      results.push(
-        ...items.filter(
-          (a) =>
-            (a.classification?.toLowerCase().includes("painting") ?? true) &&
-            (a.isPublicDomain ?? true),
-        ),
-      );
-      if (results.length >= limit) break;
-    }
-
-    // 2) If still lacking, add highlighted masterpieces
+    // If insufficient, add a single themed search to diversify
     if (results.length < limit) {
-      const ids = await searchObjectIds("masterpiece", {
-        hasImages: true,
-        isHighlight: true,
-      });
-      const items = await getManySafely(ids, 80);
-      results.push(...items);
+      const idsTheme = await searchObjectIds("European Paintings", { hasImages: true });
+      const theme = await getManySafely(idsTheme, 40);
+      results = results.concat(theme);
     }
 
-    // 3) Curated style fallbacks
+    // If still insufficient or API blocked, use curated fallback ids
     if (results.length < limit) {
-      const themes = [
-        "Impressionism",
-        "European Paintings",
-        "Renaissance",
-        "landscape",
-        "portrait",
-      ];
-      for (const t of themes) {
-        const ids = await searchObjectIds(t, { hasImages: true });
-        const items = await getManySafely(ids, 60);
-        results.push(...items);
-        if (results.length >= limit) break;
-      }
+      const curated = await getManySafely(curatedFallback, curatedFallback.length);
+      results = results.concat(curated);
     }
 
-    // rank and dedupe
+    // Dedupe and slice
     const byId = new Map<number, Artwork>();
     for (const a of results) {
       if (!byId.has(a.objectID)) byId.set(a.objectID, a);
     }
-    const ranked = Array.from(byId.values())
-      .filter((a) => a.primaryImage || a.primaryImageSmall)
-      .sort((a, b) => scored(b) - scored(a));
-
-    return ranked.slice(0, limit);
+    return Array.from(byId.values()).slice(0, limit);
   } catch {
-    // broad fallback
-    const ids = await searchObjectIds("art", { hasImages: true });
-    const items = await getManySafely(ids, 50);
-    return items.slice(0, limit);
+    // Final fallback: curated only
+    return getManySafely(curatedFallback, limit);
   }
 }
