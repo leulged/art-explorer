@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { getFeaturedArtworks } from "@/lib/metApi";
 import { ArtworkGrid } from "@/components/artwork/ArtworkGrid";
 import ArtworkSkeleton from "@/components/shared/ArtworkSkeleton";
 import ErrorBanner from "@/components/shared/ErrorBanner";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Art Explorer – Powered by The Met",
+  description:
+    "Browse highlighted artworks from The Metropolitan Museum of Art. Optimized images, fast loads, and accessible UI.",
+};
 
 export default async function Home() {
   try {
