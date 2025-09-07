@@ -8,10 +8,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}/artwork/${id}`,
     lastModified: new Date(),
   }));
-  return [
-    { url: `${siteUrl}/`, lastModified: new Date() },
-    ...items,
-  ];
+  return [{ url: `${siteUrl}/`, lastModified: new Date() }, ...items];
 }
-
-

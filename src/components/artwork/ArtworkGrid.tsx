@@ -16,5 +16,3 @@ export function ArtworkGrid({ artworks }: ArtworkGridProps) {
 }
 
 export default ArtworkGrid;
-
-

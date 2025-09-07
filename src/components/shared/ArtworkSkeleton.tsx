@@ -12,5 +12,3 @@ export function ArtworkSkeleton() {
 }
 
 export default ArtworkSkeleton;
-
-
