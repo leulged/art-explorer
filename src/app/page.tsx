@@ -18,9 +18,9 @@ export default async function Home() {
   try {
     const artworks = await getFeaturedArtworks(9);
     return (
-      <main className="mx-auto max-w-6xl px-4 py-10">
-        <header className="mb-8">
-          <h1 className="text-2xl font-semibold">
+      <main className="relative mx-auto max-w-6xl px-4 py-12 sm:py-14 before:content-[''] before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] before:bg-[length:24px_24px] motion-reduce:before:bg-none space-y-8">
+        <header>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">
             Art Explorer – Powered by The Met
           </h1>
           <p className="text-neutral-600">
