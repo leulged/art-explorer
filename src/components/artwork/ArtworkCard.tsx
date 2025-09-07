@@ -31,7 +31,7 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
               priority={priority}
               fetchPriority={priority ? "high" : "auto"}
               loading={priority ? "eager" : "lazy"}
-              unoptimized={!priority}
+              unoptimized
               placeholder={priority ? undefined : "blur"}
               blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='12'%3E%3Crect width='100%25' height='100%25' fill='%23f1f1f1'/%3E%3C/svg%3E"
               onLoadingComplete={(img) => img.setAttribute("data-loaded", "true")}
