@@ -68,7 +68,7 @@ export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
       "Raphael",
     ];
 
-    let results: Artwork[] = [];
+    const results: Artwork[] = [];
     for (const artist of artists) {
       const ids = await searchObjectIds(artist, {
         hasImages: true,
@@ -122,7 +122,7 @@ export async function getFeaturedArtworks(limit = 10): Promise<Artwork[]> {
       .sort((a, b) => scored(b) - scored(a));
 
     return ranked.slice(0, limit);
-  } catch (err) {
+  } catch {
     // broad fallback
     const ids = await searchObjectIds("art", { hasImages: true });
     const items = await getManySafely(ids, 50);

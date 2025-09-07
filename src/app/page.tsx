@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { getFeaturedArtworks } from "@/lib/metApi";
 import { ArtworkGrid } from "@/components/artwork/ArtworkGrid";
-import ArtworkSkeleton from "@/components/shared/ArtworkSkeleton";
 import ErrorBanner from "@/components/shared/ErrorBanner";
 
 export const revalidate = 3600;
@@ -47,7 +46,7 @@ export default async function Home() {
         )}
       </main>
     );
-  } catch (e) {
+  } catch {
     return (
       <main className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-2xl font-semibold mb-6">Art Explorer – Featured Picks</h1>
