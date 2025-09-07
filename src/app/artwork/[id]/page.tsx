@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Artwork } from "@/types/artwork";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Script from "next/script";
@@ -12,7 +13,11 @@ type PageProps = {
 
 export async function generateStaticParams() {
   const ids = await searchObjectIds("masterpiece", { hasImages: true });
-  return ids.slice(0, 20).map((id) => ({ id: String(id) }));
+  // Pre-validate candidates to avoid build-time 403s
+  const settled = await Promise.allSettled(ids.slice(0, 80).map((id) => getArtworkById(id)));
+  const fulfilled = settled.filter((r): r is PromiseFulfilledResult<Artwork> => r.status === "fulfilled");
+  const ok = fulfilled.filter((r) => r.value && (r.value.primaryImage || r.value.primaryImageSmall));
+  return ok.slice(0, 20).map((r) => ({ id: String(r.value.objectID) }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -52,7 +57,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ArtworkPage({ params }: PageProps) {
   const { id } = await params;
-  const art = await getArtworkById(Number(id));
+  let art: Artwork | null = null;
+  try {
+    art = await getArtworkById(Number(id));
+  } catch {
+    notFound();
+  }
   if (!art || (!art.title && !art.objectID)) {
     notFound();
   }

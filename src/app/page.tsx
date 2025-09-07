@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import type { Artwork } from "@/types/artwork";
 import { getArtworkById, getFeaturedArtworks, searchObjectIds } from "@/lib/metApi";
 import { ArtworkGrid } from "@/components/artwork/ArtworkGrid";
 import HeroArtwork from "@/components/artwork/HeroArtwork";
 import ErrorBanner from "@/components/shared/ErrorBanner";
+import type { Artwork } from "@/types/artwork";
 
 export const revalidate = 3600;
 
