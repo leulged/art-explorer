@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Artwork } from "@/types/artwork";
 import { getOptimizedImageUrl } from "@/lib/image";
+import { Artwork } from "@/types/artwork";
 
 type HeroArtworkProps = {
   artwork: Artwork;

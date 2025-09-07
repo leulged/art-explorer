@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getOptimizedImageUrl } from "@/lib/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Artwork, toArtworkCardData } from "@/types/artwork";
-import { getOptimizedImageUrl } from "@/lib/image";
 
 type ArtworkCardProps = {
   artwork: Artwork;

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Script from "next/script";
+import { getOptimizedImageUrl } from "@/lib/image";
 import { getArtworkById, searchObjectIds } from "@/lib/metApi";
 import DetailImage from "@/components/artwork/DetailImage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Artwork } from "@/types/artwork";
-import { getOptimizedImageUrl } from "@/lib/image";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -81,7 +81,11 @@ export default async function ArtworkPage({ params }: PageProps) {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
-      <Link prefetch href="/" className="text-sm text-neutral-600 hover:underline">
+      <Link
+        prefetch
+        href="/"
+        className="text-sm text-neutral-600 dark:text-neutral-200 hover:underline"
+      >
         ← Back to Home
       </Link>
 

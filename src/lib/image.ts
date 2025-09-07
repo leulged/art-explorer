@@ -31,5 +31,3 @@ export function getOptimizedImageUrl(src: string | undefined, opts: OptimizeOpti
   // Proxy disabled
   return src;
 }
-
-
