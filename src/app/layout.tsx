@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   },
   description:
     "Discover highlighted artworks from The Metropolitan Museum of Art with fast, accessible UI.",
+  keywords: ["art", "museum", "paintings", "The Met", "art explorer", "gallery"],
+  authors: [{ name: "Art Explorer" }],
   openGraph: {
     type: "website",
     url: siteUrl,

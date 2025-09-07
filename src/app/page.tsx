@@ -15,10 +15,15 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
-export default async function Home({ searchParams }: { searchParams?: Record<string, string> }) {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string>>;
+}) {
   try {
-    const q = searchParams?.q?.trim();
-    const by = (searchParams?.by as "title" | "author") || "title";
+    const sp = (await searchParams) || {};
+    const q = sp.q?.trim();
+    const by = (sp.by as "title" | "author") || "title";
     let artworks: Artwork[];
     if (q) {
       const opts =

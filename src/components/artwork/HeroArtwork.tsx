@@ -24,7 +24,7 @@ export function HeroArtwork({ artwork }: HeroArtworkProps) {
       className="group block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 rounded-xl"
     >
       <div className="relative w-full overflow-hidden rounded-xl border shadow-sm bg-neutral-50">
-        <div className="relative aspect-[16/9] md:aspect-[21/9]">
+        <div className="relative aspect-[21/9] w-full">
           {image && (
             <Image
               src={image}
