@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { getArtworkById, searchObjectIds } from "@/lib/metApi";
+import { notFound } from "next/navigation";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -51,6 +52,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ArtworkPage({ params }: PageProps) {
   const { id } = await params;
   const art = await getArtworkById(Number(id));
+  if (!art || (!art.title && !art.objectID)) {
+    notFound();
+  }
 
   const imageUrl = art.primaryImageSmall || art.primaryImage || "";
   const alt = `${art.title || "Artwork"} by ${art.artistDisplayName || "Unknown Artist"}`;
