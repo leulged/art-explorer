@@ -23,8 +23,8 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
       aria-label={`${data.title} by ${data.artist}`}
       className="group block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 rounded-md"
     >
-      <Card className="h-full overflow-hidden">
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
+      <Card className="h-full overflow-hidden transition-shadow hover:shadow-lg">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-50">
           {data.image ? (
             <Image
               src={data.image}
@@ -40,13 +40,13 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
             </div>
           )}
         </div>
-        <CardHeader>
-          <CardTitle className="line-clamp-1 text-base">{data.title}</CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle className="line-clamp-1 text-base tracking-tight">{data.title}</CardTitle>
           <CardDescription className="line-clamp-1">
             {data.artist}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           <p className="line-clamp-2 text-sm text-neutral-600">
             {data.description}
           </p>

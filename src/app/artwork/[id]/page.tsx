@@ -69,9 +69,9 @@ export default async function ArtworkPage({ params }: PageProps) {
         ← Back to Home
       </Link>
 
-      <article className="mt-4">
+      <article className="mt-6">
         <header className="mb-6">
-          <h1 className="text-3xl font-semibold mb-2">{art.title}</h1>
+          <h1 className="text-3xl font-semibold mb-2 tracking-tight">{art.title}</h1>
           <p className="text-neutral-700">
             {art.artistDisplayName || "Unknown Artist"}
           </p>
@@ -85,13 +85,12 @@ export default async function ArtworkPage({ params }: PageProps) {
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 900px"
               className="object-contain bg-neutral-50"
-              priority={false}
               priority
             />
           </div>
         ) : null}
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           <div>
             <h2 className="text-lg font-medium mb-2">Details</h2>
             <dl className="space-y-2 text-sm">
