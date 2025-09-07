@@ -10,6 +10,10 @@ export type Artwork = {
   primaryImage: string;
   primaryImageSmall: string;
   objectURL: string;
+  isHighlight?: boolean;
+  isPublicDomain?: boolean;
+  classification?: string;
+  additionalImages?: string[];
 };
 
 export type SearchResponse = {
