@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { getArtworkById, searchObjectIds } from "@/lib/metApi";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -66,32 +67,32 @@ export default async function ArtworkPage({ params }: PageProps) {
       </Link>
 
       <article className="mt-6">
-        <header className="mb-6">
-          <h1 className="text-3xl font-semibold mb-2 tracking-tight [font-family:var(--font-playfair),serif]">
+        <header className="mb-6 md:mb-8">
+          <h1 className="text-3xl md:text-4xl font-semibold mb-1 tracking-tight [font-family:var(--font-playfair),serif]">
             {art.title}
           </h1>
           <p className="text-neutral-700">{art.artistDisplayName || "Unknown Artist"}</p>
         </header>
 
         {imageUrl ? (
-          <div className="relative w-full aspect-[4/3] mb-6 rounded-md overflow-hidden">
-            <Image
-              src={imageUrl}
-              alt={alt}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 900px"
-              className="object-contain bg-neutral-50"
-              priority
-            />
+          <div className="mb-8 rounded-xl border bg-neutral-50 overflow-hidden shadow-sm">
+            <div className="relative w-full aspect-[16/9] md:aspect-[21/9]">
+              <Image
+                src={imageUrl}
+                alt={alt}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 900px"
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
         ) : null}
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-          <div>
-            <h2 className="text-lg font-medium mb-2 border-b border-[var(--border)] pb-1">
-              Details
-            </h2>
-            <dl className="space-y-2 text-sm">
+        <section className="grid gap-8 md:grid-cols-12">
+          <div className="md:col-span-8 space-y-6">
+            <h2 className="text-lg font-medium border-b border-[var(--border)] pb-2">Overview</h2>
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
               <div>
                 <dt className="text-neutral-500">Artist</dt>
                 <dd>{art.artistDisplayName || "Unknown Artist"}</dd>
@@ -110,34 +111,33 @@ export default async function ArtworkPage({ params }: PageProps) {
               </div>
             </dl>
           </div>
-          <div>
-            <h2 className="text-lg font-medium mb-2 border-b border-[var(--border)] pb-1">
-              Museum
-            </h2>
-            <dl className="space-y-2 text-sm">
-              <div>
-                <dt className="text-neutral-500">Department</dt>
-                <dd>{art.department || "—"}</dd>
-              </div>
-              <div>
-                <dt className="text-neutral-500">Accession Number</dt>
-                <dd>{art.accessionNumber || "—"}</dd>
-              </div>
-              <div>
-                <dt className="text-neutral-500">The Met Page</dt>
-                <dd>
+          <aside className="md:col-span-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">At The Met</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-500">Department</span>
+                  <span>{art.department || "—"}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-500">Accession</span>
+                  <span>{art.accessionNumber || "—"}</span>
+                </div>
+                {art.objectURL ? (
                   <a
                     href={art.objectURL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="inline-flex items-center rounded-md bg-[var(--primary)] text-white px-3 py-2 text-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ring)]"
                   >
                     View on The Met Website
                   </a>
-                </dd>
-              </div>
-            </dl>
-          </div>
+                ) : null}
+              </CardContent>
+            </Card>
+          </aside>
         </section>
 
         {/* Global footer already includes credit */}
