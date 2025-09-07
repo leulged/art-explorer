@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { getArtworkById, searchObjectIds } from "@/lib/metApi";
+import DetailImage from "@/components/artwork/DetailImage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type PageProps = {
@@ -62,7 +63,7 @@ export default async function ArtworkPage({ params }: PageProps) {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
-      <Link href="/" className="text-sm text-neutral-600 hover:underline">
+      <Link prefetch href="/" className="text-sm text-neutral-600 hover:underline">
         ← Back to Home
       </Link>
 
@@ -79,12 +80,10 @@ export default async function ArtworkPage({ params }: PageProps) {
             {/* Preload hero when available for LCP */}
             <link rel="preload" as="image" href={imageUrl} />
             <div className="relative w-full aspect-[16/9] md:aspect-[21/9]">
-              <Image
+              <DetailImage
                 src={imageUrl}
                 alt={alt}
-                fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 900px"
-                className="object-contain"
                 priority
               />
             </div>
@@ -94,6 +93,12 @@ export default async function ArtworkPage({ params }: PageProps) {
         <section className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-8 space-y-6">
             <h2 className="text-lg font-medium border-b border-[var(--border)] pb-2">Overview</h2>
+            <p className="text-neutral-700 text-sm md:text-base">
+              {[art.artistDisplayBio, art.creditLine, art.objectName]
+                .filter(Boolean)
+                .slice(0, 1)
+                .join(" ") || [art.medium, art.objectDate].filter(Boolean).join(" · ")}
+            </p>
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
               <div>
                 <dt className="text-neutral-500">Artist</dt>
@@ -112,6 +117,14 @@ export default async function ArtworkPage({ params }: PageProps) {
                 <dd>{art.culture || "—"}</dd>
               </div>
             </dl>
+            {art.artistDisplayBio ? (
+              <div className="pt-2">
+                <h3 className="text-base font-medium mb-1">About the artist</h3>
+                <p className="text-neutral-700 text-sm md:text-base line-clamp-4">
+                  {art.artistDisplayBio}
+                </p>
+              </div>
+            ) : null}
           </div>
           <aside className="md:col-span-4">
             <Card>

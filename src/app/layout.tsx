@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter, Playfair_Display } from "next/font/google";
+import PageTransition from "@/components/shared/PageTransition";
 import SiteFooter from "@/components/shared/SiteFooter";
 import SiteHeader from "@/components/shared/SiteHeader";
 import "./globals.css";
@@ -85,7 +86,9 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader />
-        <div id="content">{children}</div>
+        <div id="content">
+          <PageTransition>{children}</PageTransition>
+        </div>
         <SiteFooter />
       </body>
     </html>

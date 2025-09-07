@@ -15,6 +15,7 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
   return (
     <Link
       href={`/artwork/${data.id}`}
+      prefetch
       aria-label={`${data.title} by ${data.artist}`}
       className="group block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 rounded-md"
     >
@@ -25,11 +26,15 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
               src={data.image}
               alt={data.alt}
               fill
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, 26vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, (max-width: 1440px) 23vw, 20vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-105 opacity-0 data-[loaded=true]:opacity-100 motion-reduce:transition-none"
               priority={priority}
               fetchPriority={priority ? "high" : "auto"}
               loading={priority ? "eager" : "lazy"}
+              unoptimized={!priority}
+              placeholder={priority ? undefined : "blur"}
+              blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='12'%3E%3Crect width='100%25' height='100%25' fill='%23f1f1f1'/%3E%3C/svg%3E"
+              onLoadingComplete={(img) => img.setAttribute("data-loaded", "true")}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-neutral-100 text-neutral-500 text-sm">
@@ -37,15 +42,15 @@ export function ArtworkCard({ artwork, priority = false }: ArtworkCardProps) {
             </div>
           )}
         </div>
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-3">
           <CardTitle className="line-clamp-1 text-base tracking-tight [font-family:var(--font-playfair),serif]">
             {data.title}
           </CardTitle>
-          <CardDescription className="line-clamp-1 italic text-neutral-600">
+          <CardDescription className="line-clamp-1 italic text-neutral-700 text-sm md:text-base">
             {data.artist}
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-0">
+        <CardContent className="pt-0 pb-4">
           <p className="line-clamp-2 text-sm text-neutral-600">{data.description}</p>
         </CardContent>
       </Card>

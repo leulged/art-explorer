@@ -2,6 +2,7 @@ export type Artwork = {
   objectID: number;
   title: string;
   artistDisplayName: string;
+  artistDisplayBio?: string;
   objectDate: string;
   medium: string;
   culture: string;
@@ -14,6 +15,9 @@ export type Artwork = {
   isPublicDomain?: boolean;
   classification?: string;
   additionalImages?: string[];
+  creditLine?: string;
+  objectName?: string;
+  period?: string;
 };
 
 export type SearchResponse = {
@@ -33,7 +37,10 @@ export type ArtworkCardData = {
 export function toArtworkCardData(artwork: Artwork): ArtworkCardData {
   const title = artwork.title?.trim() || "Untitled";
   const artist = artwork.artistDisplayName?.trim() || "Unknown Artist";
-  const description = artwork.medium?.trim() || "Medium unknown";
+  const bio = artwork.artistDisplayBio?.trim();
+  const fallback1 = [artwork.medium, artwork.objectDate].filter(Boolean).join(" · ");
+  const fallback2 = [artwork.culture, artwork.medium].filter(Boolean).join(" · ");
+  const description = bio || fallback1 || fallback2 || "Details unknown";
   const image = artwork.primaryImageSmall || artwork.primaryImage || "";
   const alt = `${title} by ${artist}`;
 

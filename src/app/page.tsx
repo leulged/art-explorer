@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { getFeaturedArtworks } from "@/lib/metApi";
+import { getArtworkById, getFeaturedArtworks, searchObjectIds } from "@/lib/metApi";
 import { ArtworkGrid } from "@/components/artwork/ArtworkGrid";
+import HeroArtwork from "@/components/artwork/HeroArtwork";
 import ErrorBanner from "@/components/shared/ErrorBanner";
 
 export const revalidate = 3600;
@@ -13,9 +14,24 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams?: Record<string, string> }) {
   try {
-    const artworks = await getFeaturedArtworks(9);
+    const q = searchParams?.q?.trim();
+    const by = (searchParams?.by as "title" | "author") || "title";
+    let artworks;
+    if (q) {
+      const opts =
+        by === "author" ? { hasImages: true, artistOrCulture: true } : { hasImages: true };
+      const ids = await searchObjectIds(q, opts);
+      const take = 12;
+      const settled = await Promise.allSettled(ids.slice(0, take).map((id) => getArtworkById(id)));
+      artworks = settled
+        .filter((r): r is PromiseFulfilledResult<any> => r.status === "fulfilled")
+        .map((r) => r.value)
+        .filter((a) => a && (a.primaryImage || a.primaryImageSmall));
+    } else {
+      artworks = await getFeaturedArtworks(9);
+    }
     return (
       <main className="relative mx-auto max-w-6xl px-4 py-12 sm:py-14 before:content-[''] before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] before:bg-[length:24px_24px] motion-reduce:before:bg-none space-y-8">
         <header>
@@ -40,7 +56,12 @@ export default async function Home() {
           }}
         />
         {artworks.length > 0 ? (
-          <ArtworkGrid artworks={artworks} />
+          <>
+            <HeroArtwork artwork={artworks[0]} />
+            <div className="mt-8">
+              <ArtworkGrid artworks={artworks.slice(1)} />
+            </div>
+          </>
         ) : (
           <p className="text-neutral-600">No artworks found at the moment.</p>
         )}
