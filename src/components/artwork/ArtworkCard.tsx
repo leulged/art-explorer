@@ -18,14 +18,14 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
       aria-label={`${data.title} by ${data.artist}`}
       className="group block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 rounded-md"
     >
-      <Card className="h-full overflow-hidden transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-50">
+      <Card className="h-full w-[88%] mx-auto sm:w-full overflow-hidden transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+        <div className="relative h-44 md:h-auto md:aspect-[4/3] w-full overflow-hidden bg-neutral-50">
           {data.image ? (
             <Image
               src={optimized || data.image}
               alt={data.alt}
               fill
-              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 42vw, (max-width: 1440px) 23vw, 20vw"
+              sizes="(max-width: 640px) 88vw, (max-width: 1024px) 44vw, (max-width: 1440px) 31vw, 23vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
               unoptimized
@@ -39,15 +39,15 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
           )}
         </div>
         <CardHeader className="pb-3">
-          <CardTitle className="line-clamp-1 text-base tracking-tight [font-family:var(--font-playfair),serif]">
+          <CardTitle className="line-clamp-1 text-sm sm:text-base tracking-tight [font-family:var(--font-playfair),serif]">
             {data.title}
           </CardTitle>
-          <CardDescription className="line-clamp-1 italic text-neutral-700 dark:text-neutral-300 text-sm md:text-base">
+          <CardDescription className="line-clamp-1 italic text-neutral-700 dark:text-neutral-300 text-xs sm:text-sm md:text-base">
             {data.artist}
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0 pb-4">
-          <p className="line-clamp-2 text-sm text-neutral-600 dark:text-neutral-300">
+          <p className="line-clamp-2 text-xs sm:text-sm text-neutral-600 dark:text-neutral-300">
             {data.description}
           </p>
         </CardContent>

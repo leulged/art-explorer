@@ -3,28 +3,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getOptimizedImageUrl } from "@/lib/image";
-import { Artwork } from "@/types/artwork";
+import { Artwork, toArtworkCardData } from "@/types/artwork";
 
 type HeroArtworkProps = {
   artwork: Artwork;
 };
 
 export function HeroArtwork({ artwork }: HeroArtworkProps) {
-  const title = artwork.title?.trim() || "Untitled";
-  const artist = artwork.artistDisplayName?.trim() || "Unknown Artist";
-  const raw = artwork.primaryImageSmall || artwork.primaryImage || "";
-  const image = getOptimizedImageUrl(raw, { width: 1600, quality: 70, format: "webp" });
-  const alt = `${title} by ${artist}`;
+  const data = toArtworkCardData(artwork);
+  const image = getOptimizedImageUrl(data.image, { width: 1600, quality: 70, format: "webp" });
+  const title = data.title;
+  const alt = data.alt;
 
   return (
     <Link
       href={`/artwork/${artwork.objectID}`}
       prefetch
-      aria-label={`${title} – ${artist}`}
+      aria-label={`${title} – ${data.artist}`}
       className="group block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 rounded-xl"
     >
       <div className="relative w-full overflow-hidden rounded-xl border shadow-sm bg-neutral-50">
-        <div className="relative aspect-[21/9] w-full">
+        <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9]">
           {image && (
             <Image
               src={image}
@@ -41,10 +40,13 @@ export function HeroArtwork({ artwork }: HeroArtworkProps) {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
-            <h2 className="text-xl md:text-2xl font-semibold [font-family:var(--font-playfair),serif] line-clamp-2">
+            <h2 className="text-2xl sm:text-3xl font-semibold [font-family:var(--font-playfair),serif] leading-tight line-clamp-3">
               {title}
             </h2>
-            <p className="text-white/90 text-sm md:text-base line-clamp-1">{artist}</p>
+            <p className="text-white/90 text-sm sm:text-base mt-1 line-clamp-2">
+              {data.description}
+            </p>
+            <p className="text-white/80 text-xs sm:text-sm italic line-clamp-1">{data.artist}</p>
           </div>
         </div>
       </div>
