@@ -4,7 +4,9 @@ Small demo app built with Next.js 15 (App Router), TypeScript, Tailwind and shad
 It lists highlighted artworks from The Metropolitan Museum of Art API and provides a detail page
 with optimized images and basic SEO.
 
-Live link: (to be added after deploy)
+Live link: [art-explorer-two.vercel.app](https://art-explorer-two.vercel.app/)
+
+GitHub repo: [github.com/leulged/art-explorer](https://github.com/leulged/art-explorer)
 
 ## Tech stack
 
@@ -68,11 +70,10 @@ npm run test
 
 ## Next improvements
 
-- Search and filters (department, culture, date range)
-- Pagination/infinite scroll on the homepage
-- Favorites (local storage) and shareable links
-- More robust error boundaries and prefetching
-- Broader JSON‑LD coverage and a sitemap for categories
+- Expand data integration to fetch more items with pagination and infinite scroll.
+- Add search, filtering, and sorting to help users explore content easily.
+- Implement client-side caching (React Query / SWR) for faster repeat visits.
+- Integrate automated testing (unit + end-to-end) with Vitest and Playwright to ensure reliability and catch regressions early.
 
 ## Deployment
 
